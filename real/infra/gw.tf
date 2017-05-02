@@ -15,6 +15,7 @@ resource "aws_eip" "gw" {
 resource "aws_instance" "gw" {
   ami           = "${ var.instance_ami }"
   instance_type = "t2.micro"
+  key_name = "${ aws_key_pair.main.key_name }"
   vpc_security_group_ids = ["${ aws_security_group.gw.id }"]
   subnet_id = "${ aws_subnet.infra.id }"
   tags {

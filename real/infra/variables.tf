@@ -16,3 +16,5 @@ variable "domain" {}
 
 variable "trusted_cidr" {}
 
+variable "public_key" {}
+
