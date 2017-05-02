@@ -39,5 +39,9 @@ resource "aws_security_group" "gw" {
     protocol = "tcp"
     cidr_blocks = ["${ var.trusted_cidr }"]
   }
+
+  tags {
+      Name = "${ var.vpc_name }-gw"
+  }
 }
 
