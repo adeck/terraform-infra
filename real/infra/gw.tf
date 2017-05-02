@@ -1,8 +1,9 @@
 
 module "gw" {
+    name = "gw"
     source = "./service"
-    service_short_name = "gw"
     service_dns = "midgard"
+
     instance_ami = "${ var.instance_ami }"
     vpc_name = "${ var.vpc_name }"
     key_name = "${ aws_key_pair.main.key_name }"

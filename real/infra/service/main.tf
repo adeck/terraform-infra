@@ -19,7 +19,7 @@ resource "aws_instance" "main" {
   vpc_security_group_ids = ["${ var.security_group_ids }"]
   subnet_id = "${ var.subnet_id }"
   tags {
-    Name = "${ var.vpc_name }-${ var.service_short_name }"
+    Name = "${ var.vpc_name }-${ var.name }"
     Description = "Managed by terraform"
   }
 }

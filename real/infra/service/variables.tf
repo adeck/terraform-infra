@@ -1,5 +1,5 @@
 
-variable "service_short_name" {}
+variable "name" {}
 variable "service_dns" {}
 
 variable "instance_ami" {}

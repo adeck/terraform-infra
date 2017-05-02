@@ -1,7 +1,7 @@
 
 module "vpn" {
+    name= "vpn"
     source = "./service"
-    service_short_name = "vpn"
     service_dns = "niflheim"
 
     instance_ami = "${ var.instance_ami }"
@@ -34,6 +34,9 @@ resource "aws_security_group" "vpn" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  tags {
+      Name = "${ var.vpc_name }-vpn"
+  }
 }
 
 
