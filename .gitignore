@@ -2,4 +2,5 @@
 env.sh
 *.tfstate
 *.backup
+.terraform/
 
