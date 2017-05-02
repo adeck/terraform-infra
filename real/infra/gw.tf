@@ -1,32 +1,18 @@
 
-resource "aws_route53_record" "gw" {
-  zone_id = "${ aws_route53_zone.infra.zone_id }"
-  name    = "midgard"
-  type    = "A"
-  ttl     = "300"
-  records = ["${ aws_eip.gw.public_ip }"]
-}
-
-resource "aws_eip" "gw" {
-    instance = "${ aws_instance.gw.id }"
-    vpc      = true
-}
-
-resource "aws_instance" "gw" {
-  ami           = "${ var.instance_ami }"
-  instance_type = "t2.micro"
-  key_name = "${ aws_key_pair.main.key_name }"
-  vpc_security_group_ids = [
+module "gw" {
+    source = "./service"
+    service_short_name = "gw"
+    service_dns = "midgard"
+    instance_ami = "${ var.instance_ami }"
+    vpc_name = "${ var.vpc_name }"
+    key_name = "${ aws_key_pair.main.key_name }"
+    security_group_ids = [
         "${ aws_security_group.main.id }",
         "${ aws_security_group.gw.id }"
     ]
-  subnet_id = "${ aws_subnet.infra.id }"
-  tags {
-    Name = "${ var.vpc_name }-gw"
-    Description = "Managed by terraform"
-  }
+    subnet_id = "${ aws_subnet.infra.id }"
+    zone_id = "${ aws_route53_zone.infra.zone_id }"
 }
-
 
 resource "aws_security_group" "gw" {
   name        = "${ var.vpc_name }-gw"

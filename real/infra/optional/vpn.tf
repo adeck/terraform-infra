@@ -1,32 +1,19 @@
 
-resource "aws_route53_record" "vpn" {
-  zone_id = "${ aws_route53_zone.infra.zone_id }"
-  name    = "niflheim"
-  type    = "A"
-  ttl     = "300"
-  records = ["${ aws_eip.vpn.public_ip }"]
-}
+module "vpn" {
+    source = "./service"
+    service_short_name = "vpn"
+    service_dns = "niflheim"
 
-resource "aws_eip" "vpn" {
-    instance = "${ aws_instance.vpn.id }"
-    vpc      = true
-}
-
-resource "aws_instance" "vpn" {
-  ami           = "${ var.instance_ami }"
-  instance_type = "t2.micro"
-  key_name = "${ aws_key_pair.main.key_name }"
-  vpc_security_group_ids = [
+    instance_ami = "${ var.instance_ami }"
+    vpc_name = "${ var.vpc_name }"
+    key_name = "${ aws_key_pair.main.key_name }"
+    security_group_ids = [
         "${ aws_security_group.main.id }",
         "${ aws_security_group.vpn.id }"
     ]
-  subnet_id = "${ aws_subnet.infra.id }"
-  tags {
-    Name = "${ var.vpc_name }-vpn"
-    Description = "Managed by terraform"
-  }
+    subnet_id = "${ aws_subnet.infra.id }"
+    zone_id = "${ aws_route53_zone.infra.zone_id }"
 }
-
 
 resource "aws_security_group" "vpn" {
   name        = "${ var.vpc_name }-vpn"
@@ -48,4 +35,5 @@ resource "aws_security_group" "vpn" {
   }
 
 }
+
 
