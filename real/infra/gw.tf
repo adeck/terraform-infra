@@ -4,7 +4,7 @@ module "gw" {
     source = "./service"
     service_dns = "midgard"
 
-    instance_ami = "${ var.instance_ami }"
+    instance_ami = "${ data.aws_ami.main.id }"
     vpc_name = "${ var.vpc_name }"
     key_name = "${ aws_key_pair.main.key_name }"
     security_group_ids = [

@@ -5,6 +5,22 @@ provider "aws" {
   region     = "${ var.geo }"
 }
 
+data "aws_ami" "main" {
+  most_recent = true
+
+  filter {
+    name   = "name"
+    values = ["debian-jessie-*"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+
+  owners = ["379101102735"] # Debian
+}
+
 resource "aws_key_pair" "main" {
     key_name   = "${ var.vpc_name }-main"
     public_key = "${ var.public_key }"
