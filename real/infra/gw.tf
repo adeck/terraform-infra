@@ -27,6 +27,14 @@ resource "aws_security_group" "gw" {
     cidr_blocks = ["${ var.trusted_cidr }"]
   }
 
+  # this host's job is to proxy incoming SSH traffic from the wider internet to the specific hosts managed by terraform. Nothing less, nothing more.
+  egress {
+    from_port   = 22
+    to_port     = 22
+    protocol = "tcp"
+    security_groups = ["${ aws_security_group.main.id }"]
+  }
+
   tags {
       Name = "${ var.vpc_name }-gw"
   }
