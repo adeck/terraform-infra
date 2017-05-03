@@ -3,7 +3,6 @@ module "gw" {
     name = "gw"
     source = "./service"
     service_dns = "midgard"
-
     instance_ami = "${ data.aws_ami.main.id }"
     vpc_name = "${ var.vpc_name }"
     key_name = "${ aws_key_pair.main.key_name }"
@@ -12,7 +11,8 @@ module "gw" {
         "${ aws_security_group.gw.id }"
     ]
     subnet_id = "${ aws_subnet.infra.id }"
-    zone_id = "${ aws_route53_zone.infra.zone_id }"
+    public_zone_id = "${ aws_route53_zone.infra.zone_id }"
+    private_zone_id = "${ aws_route53_zone.private.zone_id }"
 }
 
 resource "aws_security_group" "gw" {

@@ -1,10 +1,18 @@
 
-resource "aws_route53_record" "main" {
-  zone_id = "${ var.zone_id }"
+resource "aws_route53_record" "public" {
+  zone_id = "${ var.public_zone_id }"
   name    = "${ var.service_dns }"
   type    = "A"
   ttl     = "300"
   records = ["${ aws_eip.main.public_ip }"]
+}
+
+resource "aws_route53_record" "private" {
+  zone_id = "${ var.private_zone_id }"
+  name    = "${ var.name }-infra"
+  type    = "A"
+  ttl     = "300"
+  records = ["${ aws_instance.main.private_ip }"]
 }
 
 resource "aws_eip" "main" {
@@ -23,5 +31,4 @@ resource "aws_instance" "main" {
     Description = "Managed by terraform"
   }
 }
-
 
