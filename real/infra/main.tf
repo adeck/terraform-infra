@@ -38,12 +38,38 @@ resource "aws_security_group" "main" {
     security_groups = ["${ aws_security_group.gw.id }"]
   }
 
+  # saltmaster uplink
   egress {
-    from_port       = 0
-    to_port         = 0
-    protocol        = "-1"
+    from_port       = 4505
+    to_port         = 4506
+    protocol        = "tcp"
+    security_groups = ["${ aws_security_group.salt.id }"]
+  }
+
+  egress {
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
     cidr_blocks     = ["0.0.0.0/0"]
   }
+
+  egress {
+    from_port       = 443
+    to_port         = 443
+    protocol        = "tcp"
+    cidr_blocks     = ["0.0.0.0/0"]
+  }
+
+  # ntp
+  egress {
+    from_port       = 123
+    to_port         = 123
+    protocol        = "udp"
+    cidr_blocks     = ["0.0.0.0/0"]
+  }
+
+  # not whitelisting DNS / 53 b/c that's done over the link-local IP, so shouldn't be affected by SG config
+  # plus, it's amazon special sauce. I don't think it *can* be blocked
 
   tags {
       Name = "${ var.vpc_name }-main"
