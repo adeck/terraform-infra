@@ -12,8 +12,7 @@ module "vpn" {
         "${ aws_security_group.vpn.id }"
     ]
     subnet_id = "${ aws_subnet.infra.id }"
-    public_zone_id = "${ aws_route53_zone.infra.zone_id }"
-    private_zone_id = "${ aws_route53_zone.infra-private.zone_id }"
+    domain = "${ var.domain }"
 }
 
 resource "aws_security_group" "vpn" {

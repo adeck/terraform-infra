@@ -8,8 +8,7 @@ variable "vpc_name" {}
 variable "key_name" {}
 variable "security_group_ids" {type = "list"}
 variable "subnet_id" {}
-variable "public_zone_id" {}
-variable "private_zone_id" {}
+variable "domain" {}
 
 
 
