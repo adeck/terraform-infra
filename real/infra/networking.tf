@@ -33,8 +33,9 @@ resource "aws_route_table" "main" {
 }
 
 resource "aws_subnet" "infra" {
-    vpc_id            = "${ aws_vpc.main.id }"
-    cidr_block        = "${ cidrsubnet(aws_vpc.main.cidr_block, 8, 1) }"
+    vpc_id = "${ aws_vpc.main.id }"
+    cidr_block = "${ cidrsubnet(aws_vpc.main.cidr_block, 8, 1) }"
+    map_public_ip_on_launch = true
     tags {
         Name = "infra"
         Description = "Managed by terraform"

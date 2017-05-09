@@ -11,7 +11,9 @@ module "gw" {
         "${ aws_security_group.gw.id }"
     ]
     subnet_id = "${ aws_subnet.infra.id }"
-    domain = "${ var.domain }"
+    public_domain_id = "${ aws_route53_zone.infra.id }"
+    private_domain_id = "${ aws_route53_zone.private.id }"
+    private_domain_name = "${ aws_route53_zone.private.name }"
 }
 
 resource "aws_security_group" "gw" {
