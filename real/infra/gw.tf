@@ -1,18 +1,23 @@
 
-module "gw" {
+module "public_gw" {
+    source = "./public_endpoint"
+    service_hostname = "midgard"
+    instance_id = "${ module.appliance_gw.instance_id }"
+    zone_id = "${ aws_route53_zone.infra.id }"
+}
+
+module "appliance_gw" {
     name = "gw"
-    source = "./service"
-    service_dns = "midgard"
-    instance_ami = "${ data.aws_ami.main.id }"
+    source = "./appliance"
     vpc_name = "${ var.vpc_name }"
     key_name = "${ aws_key_pair.main.key_name }"
     security_group_ids = [
         "${ aws_security_group.main.id }",
         "${ aws_security_group.gw.id }"
     ]
-    subnet_id = "${ aws_subnet.infra.id }"
-    public_domain_id = "${ aws_route53_zone.infra.id }"
-    private_domain_id = "${ aws_route53_zone.private.id }"
+    instance_ami = "${ data.aws_ami.main.id }"
+    subnet_id = "${ aws_subnet.dmz.id }"
+    private_zone_id = "${ aws_route53_zone.private.id }"
     private_domain_name = "${ aws_route53_zone.private.name }"
 }
 
