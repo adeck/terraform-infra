@@ -1,9 +1,9 @@
 
 module "public_gw" {
     source = "./public_endpoint"
-    service_hostname = "midgard"
+    service_hostname = "gw"
     instance_id = "${ module.appliance_gw.instance_id }"
-    zone_id = "${ aws_route53_zone.infra.id }"
+    zone_id = "${ data.aws_route53_zone.main.id }"
 }
 
 module "appliance_gw" {
