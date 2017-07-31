@@ -11,7 +11,7 @@ resource "aws_instance" "main" {
   ami           = "${ var.instance_ami }"
   instance_type = "t2.micro"
   key_name = "${ var.key_name }"
-  associate_public_ip_address = true
+  associate_public_ip_address = false # making it explicit
   vpc_security_group_ids = ["${ var.security_group_ids }"]
   subnet_id = "${ var.subnet_id }"
   user_data = "${ data.template_file.main.rendered }"
