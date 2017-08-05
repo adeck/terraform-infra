@@ -24,7 +24,7 @@ resource "aws_route53_zone" "private" {
 }
 
 resource "aws_vpc_dhcp_options" "main" {
-    domain_name = "${ var.domain }"
+    domain_name = "local"
     domain_name_servers = ["169.254.169.253"]
 }
 
