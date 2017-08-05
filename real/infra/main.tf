@@ -10,7 +10,7 @@ data "aws_ami" "main" {
 
   filter {
     name   = "name"
-    values = ["debian-jessie-*"]
+    values = ["debian-stretch-*"]
   }
 
   filter {
