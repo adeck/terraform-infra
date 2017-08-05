@@ -38,6 +38,13 @@ resource "aws_security_group" "main" {
     security_groups = ["${ aws_security_group.gw.id }"]
   }
 
+  ingress {
+    from_port   = 5666
+    to_port     = 5666
+    protocol = "tcp"
+    security_groups = ["${ aws_security_group.nagios.id }"]
+  }
+
   egress {
     from_port       = 0
     to_port         = 0
