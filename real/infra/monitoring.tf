@@ -19,6 +19,13 @@ resource "aws_security_group" "icinga" {
   description = "icinga master servers"
   vpc_id = "${ aws_vpc.main.id }"
 
+  ingress {
+    from_port   = 3000
+    to_port     = 3000
+    protocol = "tcp"
+    security_groups = ["${ aws_security_group.gw.id }"]
+  }
+
   tags {
       Name = "${ var.vpc_name }-icinga"
   }
