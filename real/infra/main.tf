@@ -38,11 +38,12 @@ resource "aws_security_group" "main" {
     security_groups = ["${ aws_security_group.gw.id }"]
   }
 
+  # for icinga NRPE
   ingress {
     from_port   = 5666
     to_port     = 5666
     protocol = "tcp"
-    security_groups = ["${ aws_security_group.icinga.id }"]
+    security_groups = ["${ aws_security_group.monitoring.id }"]
   }
 
   egress {
