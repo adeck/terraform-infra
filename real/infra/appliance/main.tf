@@ -11,7 +11,8 @@ resource "aws_instance" "main" {
   ami           = "${ var.instance_ami }"
   instance_type = "t2.micro"
   key_name = "${ var.key_name }"
-  associate_public_ip_address = false # making it explicit
+  # if specified "false", and an EIP gets associated, the resource will be recreated every time.
+  # associate_public_ip_address = false
   vpc_security_group_ids = ["${ var.security_group_ids }"]
   subnet_id = "${ var.subnet_id }"
   user_data = "${ data.template_file.main.rendered }"
