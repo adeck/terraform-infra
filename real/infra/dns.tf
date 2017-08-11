@@ -19,12 +19,12 @@ resource "aws_route53_record" "infra-ns" {
 
 # for internal / private DNS resolution
 resource "aws_route53_zone" "private" {
-    name = "local"
+    name = "internal"
     vpc_id = "${ aws_vpc.main.id }"
 }
 
 resource "aws_vpc_dhcp_options" "main" {
-    domain_name = "local"
+    domain_name = "internal"
     domain_name_servers = ["169.254.169.253"]
 }
 
