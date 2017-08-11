@@ -2,13 +2,14 @@
 ### inputs
 
 variable "name" {}
-
 variable "instance_ami" {}
 
-variable "vpc_name" {}
+# security
 variable "key_name" {}
 variable "security_group_ids" {type = "list"}
+# networking
 variable "subnet_id" {}
+# dns
 variable "private_zone_id" {}
 variable "private_domain_name" {}
 
