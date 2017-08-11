@@ -6,19 +6,11 @@ provider "aws" {
 }
 
 data "aws_ami" "main" {
-  most_recent = true
-
+  owners = ["self"]
   filter {
     name   = "name"
-    values = ["debian-stretch-*"]
+    values = ["debian-stretch-base"]
   }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-
-  owners = ["379101102735"] # Debian
 }
 
 resource "aws_key_pair" "main" {
