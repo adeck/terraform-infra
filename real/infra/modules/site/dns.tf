@@ -1,23 +1,13 @@
 
-data "aws_route53_zone" "main" {
+
+#### public DNS resolution
+
+data "aws_route53_zone" "public" {
     name = "${ var.domain }"
 }
 
-resource "aws_route53_zone" "infra" {
-    name = "infra.${ var.domain }"
-}
+#### private DNS resolution
 
-
-resource "aws_route53_record" "infra-ns" {
-  zone_id = "${ data.aws_route53_zone.main.zone_id }"
-  name    = "${ aws_route53_zone.infra.name }"
-  type    = "NS"
-  ttl     = "60"
-
-  records = ["${ aws_route53_zone.infra.name_servers }"]
-}
-
-# for internal / private DNS resolution
 resource "aws_route53_zone" "private" {
     name = "${ var.private_domain }"
     vpc_id = "${ aws_vpc.main.id }"

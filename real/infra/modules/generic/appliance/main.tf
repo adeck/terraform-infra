@@ -1,14 +1,14 @@
 
 resource "aws_route53_record" "private" {
   zone_id = "${ var.private_zone_id }"
-  name    = "${ var.name }"
+  name    = "${ var.service_name }"
   type    = "A"
   ttl     = "60"
   records = ["${ aws_instance.main.private_ip }"]
 }
 
 resource "aws_instance" "main" {
-  ami           = "${ var.instance_ami }"
+  ami           = "${ var.ami_id }"
   instance_type = "t2.micro"
   key_name = "${ var.key_name }"
   # if specified "false", and an EIP gets associated, the resource will be recreated every time.
@@ -17,7 +17,7 @@ resource "aws_instance" "main" {
   subnet_id = "${ var.subnet_id }"
   user_data = "${ data.template_file.cloudinit.rendered }"
   tags {
-    Name = "${ var.name }"
+    Name = "${ var.service_name }"
     Description = "Managed by terraform"
   }
 }
@@ -25,7 +25,7 @@ resource "aws_instance" "main" {
 data "template_file" "cloudinit" {
     template = "${ file("${path.module}/cloudinit.yml") }"
     vars {
-        hostname = "${ var.name }.${ var.private_domain_name }"
+        hostname = "${ var.service_name }.${ var.private_domain_name }"
     }
 }
 
