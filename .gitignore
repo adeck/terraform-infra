@@ -5,3 +5,5 @@ env.sh
 .terraform/
 terraform.tfvars
 
+adeck/
+
