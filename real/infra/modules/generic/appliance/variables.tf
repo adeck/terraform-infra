@@ -7,6 +7,9 @@ variable "ami_id" {}
 # security
 variable "key_name" {}
 variable "security_group_ids" {type = "list"}
+variable "iam_profile" {
+  default = ""
+}
 # networking
 variable "subnet_id" {}
 # dns

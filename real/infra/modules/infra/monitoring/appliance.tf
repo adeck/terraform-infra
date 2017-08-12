@@ -7,6 +7,7 @@ module "appliance_monitoring" {
       "${ var.default_sg_id }"
       ,"${ aws_security_group.monitoring.id }"
     ]
+    iam_profile = "${ aws_iam_instance_profile.monitoring.name }"
     ami_id = "${ var.ami_id }"
     subnet_id = "${ var.subnet_id }"
     private_zone_id = "${ var.private_zone_id }"

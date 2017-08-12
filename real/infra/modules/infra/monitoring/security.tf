@@ -1,4 +1,46 @@
 
+#### IAM role
+
+resource "aws_iam_instance_profile" "monitoring" {
+  name = "monitoring"
+  role = "${ aws_iam_role.monitoring.name }"
+}
+
+resource "aws_iam_role" "monitoring" {
+  name = "monitoring"
+  assume_role_policy = "${ data.aws_iam_policy_document.assume_role.json }"
+}
+
+resource "aws_iam_role_policy" "monitoring" {
+  name    = "monitoring"
+  role    = "${ aws_iam_role.monitoring.id }"
+  policy  = "${ data.aws_iam_policy_document.monitoring.json }"
+}
+
+data "aws_iam_policy_document" "assume_role" {
+  statement {
+    effect = "Allow"
+    actions = ["sts:AssumeRole"]
+    principals {
+      type = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+  }
+}
+
+data "aws_iam_policy_document" "monitoring" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "cloudwatch:GetMetricStatistics"
+      ,"cloudwatch:ListMetrics"
+      ,"cloudwatch:PutMetricData"
+      ,"ec2:DescribeTags"
+    ]
+    resources = ["*"]
+  }
+}
+
 #### monitoring SG
 
 resource "aws_security_group" "monitoring" {

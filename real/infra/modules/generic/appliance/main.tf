@@ -16,6 +16,7 @@ resource "aws_instance" "main" {
   vpc_security_group_ids = ["${ var.security_group_ids }"]
   subnet_id = "${ var.subnet_id }"
   user_data = "${ data.template_file.cloudinit.rendered }"
+  iam_instance_profile = "${ var.iam_profile }"
   tags {
     Name = "${ var.service_name }"
     Description = "Managed by terraform"
