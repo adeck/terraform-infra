@@ -1,0 +1,28 @@
+---
+
+# these variables aren't visible from the templates; these are used to configure the script that does the jinja2 templating
+# right now there aren't really any configurable options; env_name is just ignored. :P
+config:
+  env_name: &env dev
+
+# the entire dictionary under terraform is passed as data to the jinja2 templates
+terraform:
+  region: 'us-east-1'
+  vpc:
+    name: *env
+    cidr: "10.10.0.0/16"
+  domain:
+    # this is the domain name used in publicly-resolvable hostnames
+    # This assumes you've already created a Route 53 zone for the domain in question
+    public: example.com
+    # this is the domain name used internally within you network
+    private: localdomain
+  ssh:
+    # replace with your SSH public key
+    public_key: "ssh-rsa ... example@example.com"
+  # the CIDR to whitelist for SSH access- so if you're on your home network, you'd use your home network's public IP address
+  trusted_cidr: "1.2.3.4/30"
+
+# anything other top-level keys you put in this file aside from 'config' and 'terraform' are ignored atm, so feel free to put whatever in there.
+
+
