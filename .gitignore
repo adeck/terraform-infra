@@ -3,8 +3,6 @@ env.sh
 *.tfstate
 *.backup
 .terraform/
-terraform.tfvars
-terraform.tfvars.backup
 
 adeck/
 
