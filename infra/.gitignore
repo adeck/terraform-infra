@@ -1,4 +1,4 @@
 /terraform/
-/staging/
+/.staging/
 /envs/*
 !/envs/example

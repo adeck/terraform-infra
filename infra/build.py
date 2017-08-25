@@ -16,7 +16,7 @@ import yaml
 import click
 
 jinja_dir = 'jinjas'
-staging_dir = 'staging'
+staging_dir = '.staging'
 output_dir = 'terraform'
 state_files = ['terraform.tfstate', 'terraform.tfstate.backup']
 
