@@ -36,7 +36,7 @@ resource "aws_instance" "{{ name }}" {
       {% endif %}
     ]
   subnet_id = "${ aws_subnet.{{ subnet }}.id }"
-  user_data = "${ data.template_file.cloudinit.rendered }"
+  user_data = "${ data.template_file.{{ name }}.rendered }"
   {% if iam_profile %}
     iam_instance_profile = "{{ iam_profile }}"
   {% endif %}
@@ -46,7 +46,7 @@ resource "aws_instance" "{{ name }}" {
   }
 }
 
-data "template_file" "cloudinit" {
+data "template_file" "{{ name }}" {
     template = "${ file("${path.module}/files/cloudinit.yml") }"
     vars {
         hostname = "{{ name }}.{{ domain.private }}"
