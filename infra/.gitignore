@@ -1,4 +1,0 @@
-/terraform/
-/.staging/
-/envs/*
-!/envs/example

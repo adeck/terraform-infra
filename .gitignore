@@ -6,3 +6,8 @@ env.sh
 
 adeck/
 
+/infra/terraform/
+/infra/.staging/
+/infra/envs/*
+!/infra/envs/example
+
