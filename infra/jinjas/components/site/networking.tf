@@ -1,10 +1,10 @@
 
 resource "aws_vpc" "main" {
-    cidr_block       = "${ var.vpc_cidr }"
+    cidr_block       = "{{ vpc.cidr }}"
     enable_dns_support = "true"
     enable_dns_hostnames = "true"
     tags {
-        Name = "${ var.vpc_name }"
+        Name = "{{ vpc.name }}"
         Description = "Managed by terraform"
     }
 }
@@ -16,8 +16,8 @@ resource "aws_internet_gateway" "main" {
 }
 
 resource "aws_nat_gateway" "main" {
-    allocation_id = "${aws_eip.nat.id}"
-    subnet_id     = "${aws_subnet.dmz.id}"
+    allocation_id = "${ aws_eip.nat.id }"
+    subnet_id     = "${ aws_subnet.dmz.id }"
 }
 
 resource "aws_eip" "nat" {
@@ -38,7 +38,7 @@ resource "aws_route_table" "dmz" {
   }
 
   tags {
-    Name = "${ var.vpc_name }-dmz"
+    Name = "{{ vpc.name }}-dmz"
     Description = "Managed by terraform"
   }
 }
@@ -68,7 +68,7 @@ resource "aws_route_table" "infra" {
   }
 
   tags {
-    Name = "${ var.vpc_name }-infra"
+    Name = "{{ vpc.name }}-infra"
     Description = "Managed by terraform"
   }
 }
