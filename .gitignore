@@ -4,6 +4,7 @@ env.sh
 *.backup
 .terraform/
 terraform.tfvars
+terraform.tfvars.backup
 
 adeck/
 
