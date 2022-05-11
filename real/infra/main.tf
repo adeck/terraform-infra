@@ -14,6 +14,11 @@ data "aws_ami" "main" {
   }
 
   filter {
+    name   = "architecture"
+    values = ["x86_64"]
+  }
+
+  filter {
     name   = "virtualization-type"
     values = ["hvm"]
   }
@@ -38,12 +43,12 @@ resource "aws_security_group" "main" {
     security_groups = ["${ aws_security_group.gw.id }"]
   }
 
-  ingress {
-    from_port   = 5666
-    to_port     = 5666
-    protocol = "tcp"
-    security_groups = ["${ aws_security_group.icinga.id }"]
-  }
+#  ingress {
+#    from_port   = 5666
+#    to_port     = 5666
+#    protocol = "tcp"
+#    security_groups = ["${ aws_security_group.icinga.id }"]
+#  }
 
   egress {
     from_port       = 0
