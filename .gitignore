@@ -10,4 +10,7 @@ adeck/
 /infra/.staging/
 /infra/envs/*
 !/infra/envs/example
+.terraform.lock.hcl
+terraform.tfvars
+
 
