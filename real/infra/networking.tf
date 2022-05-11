@@ -1,18 +1,10 @@
 
 resource "aws_vpc" "main" {
-<<<<<<< HEAD:infra/jinjas/components/site/networking.tf
-    cidr_block       = "{{ vpc.cidr }}"
-    enable_dns_support = "true"
-    enable_dns_hostnames = "true"
-    tags {
-        Name = "{{ vpc.name }}"
-=======
     cidr_block       = var.vpc_cidr
     enable_dns_support = "true"
     enable_dns_hostnames = "true"
     tags = {
         Name = var.vpc_name
->>>>>>> d08617a (updates from two years ago that never got pushed out):real/infra/networking.tf
         Description = "Managed by terraform"
     }
 }
@@ -24,13 +16,8 @@ resource "aws_internet_gateway" "main" {
 }
 
 resource "aws_nat_gateway" "main" {
-<<<<<<< HEAD:infra/jinjas/components/site/networking.tf
-    allocation_id = "${ aws_eip.nat.id }"
-    subnet_id     = "${ aws_subnet.dmz.id }"
-=======
     allocation_id = aws_eip.nat.id
     subnet_id     = aws_subnet.dmz.id
->>>>>>> d08617a (updates from two years ago that never got pushed out):real/infra/networking.tf
 }
 
 resource "aws_eip" "nat" {
@@ -50,13 +37,8 @@ resource "aws_route_table" "dmz" {
     gateway_id = aws_internet_gateway.main.id
   }
 
-<<<<<<< HEAD:infra/jinjas/components/site/networking.tf
-  tags {
-    Name = "{{ vpc.name }}-dmz"
-=======
   tags = {
     Name = "dmz-${ var.vpc_name }"
->>>>>>> d08617a (updates from two years ago that never got pushed out):real/infra/networking.tf
     Description = "Managed by terraform"
   }
 }
@@ -85,13 +67,8 @@ resource "aws_route_table" "infra" {
     nat_gateway_id = aws_nat_gateway.main.id
   }
 
-<<<<<<< HEAD:infra/jinjas/components/site/networking.tf
-  tags {
-    Name = "{{ vpc.name }}-infra"
-=======
   tags = {
     Name = "infra-${ var.vpc_name }"
->>>>>>> d08617a (updates from two years ago that never got pushed out):real/infra/networking.tf
     Description = "Managed by terraform"
   }
 }
