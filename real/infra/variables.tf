@@ -1,16 +1,17 @@
 
-variable "access_key" {}
-variable "secret_key" {}
+variable "access_key" {type = string}
+variable "secret_key" {type = string}
 variable "geo" {
+    type = string
     default = "us-west-1"
 }
 
-variable "vpc_cidr" {}
-variable "vpc_name" {}
+variable "vpc_cidr" {type = string}
+variable "vpc_name" {type = string}
 
-variable "domain" {}
+variable "domain" {type = string}
 
-variable "trusted_cidr" {}
+variable "ssh_trusted_cidrs" {type = list(string)}
 
-variable "public_key" {}
+variable "public_key" {type = string}
 

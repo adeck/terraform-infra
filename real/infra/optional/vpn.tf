@@ -4,21 +4,21 @@ module "vpn" {
     source = "./service"
     service_dns = "niflheim"
 
-    instance_ami = "${ var.instance_ami }"
-    vpc_name = "${ var.vpc_name }"
-    key_name = "${ aws_key_pair.main.key_name }"
+    instance_ami = var.instance_ami
+    vpc_name = var.vpc_name
+    key_name = aws_key_pair.ssh.key_name
     security_group_ids = [
-        "${ aws_security_group.main.id }",
-        "${ aws_security_group.vpn.id }"
+        aws_security_group.main.id,
+        aws_security_group.vpn.id
     ]
-    subnet_id = "${ aws_subnet.infra.id }"
-    domain = "${ var.domain }"
+    subnet_id =  aws_subnet.infra.id
+    domain =  var.domain
 }
 
 resource "aws_security_group" "vpn" {
-  name        = "${ var.vpc_name }-vpn"
+  name        = "vpn-${ var.vpc_name }"
   description = "Allow inbound VPN traffic on 443"
-  vpc_id = "${ aws_vpc.main.id }"
+  vpc_id = aws_vpc.main.id
 
   ingress {
     from_port   = 443
@@ -35,7 +35,7 @@ resource "aws_security_group" "vpn" {
   }
 
   tags {
-      Name = "${ var.vpc_name }-vpn"
+      Name = "vpn-${ var.vpc_name }"
   }
 }
 
