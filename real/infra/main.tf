@@ -1,10 +1,19 @@
+#
+# This contains:
+# - base AMI
+# - main security zone
+# - main SSH keypair
+#
+
 
 provider "aws" {
-  access_key = "${ var.access_key }"
-  secret_key = "${ var.secret_key }"
-  region     = "${ var.geo }"
+  access_key = var.access_key
+  secret_key = var.secret_key
+  region     = var.geo
 }
 
+# TODO -- note that this uses "stretch" despite the current stable being "buster".
+#           "buster" is not yet available as an AMI from the main debian account.
 data "aws_ami" "main" {
   most_recent = true
 
@@ -26,39 +35,28 @@ data "aws_ami" "main" {
   owners = ["379101102735"] # Debian
 }
 
-resource "aws_key_pair" "main" {
-    key_name   = "${ var.vpc_name }-main"
-    public_key = "${ var.public_key }"
+resource "aws_key_pair" "ssh" {
+    key_name   = "ssh-${ var.vpc_name }"
+    public_key = var.public_key
 }
 
 resource "aws_security_group" "main" {
-  name        = "${ var.vpc_name }-main"
+  name        = "main-${ var.vpc_name }"
   description = "Default rules for hosts in ${ var.vpc_name } VPC"
-  vpc_id = "${ aws_vpc.main.id }"
+  vpc_id = aws_vpc.main.id
 
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol = "tcp"
-    security_groups = ["${ aws_security_group.gw.id }"]
-  }
-
-#  ingress {
-#    from_port   = 5666
-#    to_port     = 5666
-#    protocol = "tcp"
-#    security_groups = ["${ aws_security_group.icinga.id }"]
-#  }
-
-  egress {
-    from_port       = 0
-    to_port         = 0
-    protocol        = "-1"
-    cidr_blocks     = ["0.0.0.0/0"]
-  }
-
-  tags {
-      Name = "${ var.vpc_name }-main"
+  tags = {
+      Name = "main-${ var.vpc_name }"
   }
 }
+
+resource "aws_security_group_rule" "allow_all_outgoing" {
+    type              = "egress"
+    from_port         = 0
+    to_port           = 0
+    protocol          = "all"
+    cidr_blocks     = ["0.0.0.0/0"]
+    security_group_id = aws_security_group.main.id
+}
+
 
