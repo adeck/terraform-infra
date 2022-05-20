@@ -12,14 +12,13 @@ provider "aws" {
   region     = var.geo
 }
 
-# TODO -- note that this uses "stretch" despite the current stable being "buster".
-#           "buster" is not yet available as an AMI from the main debian account.
+# as per: https://wiki.debian.org/Cloud/AmazonEC2Image/Bullseye
 data "aws_ami" "main" {
   most_recent = true
 
   filter {
     name   = "name"
-    values = ["debian-stretch-*"]
+    values = ["debian-11-*"] # debian "bullseye"
   }
 
   filter {
@@ -32,7 +31,7 @@ data "aws_ami" "main" {
     values = ["hvm"]
   }
 
-  owners = ["379101102735"] # Debian
+  owners = ["136693071363"] # Debian
 }
 
 resource "aws_key_pair" "ssh" {
