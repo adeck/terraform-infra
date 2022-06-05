@@ -13,7 +13,9 @@ resource "aws_instance" "main" {
   key_name = var.key_name
   vpc_security_group_ids = var.security_group_ids
   subnet_id = var.subnet_id
-  user_data = data.template_file.main.rendered
+  user_data = templatefile("${path.module}/cloudinit.yaml", {
+    hostname = "${ var.name }.${ var.private_domain_name }"
+  })
   root_block_device {
     volume_size = var.volume_size
   }
@@ -23,12 +25,5 @@ resource "aws_instance" "main" {
   }
   # Making this explicit actually introduces a bug, because by default no public IP is assigned, but for a public endpoint this will *become* true, so every subsequent apply run will recreate all public instances.
   # associate_public_ip_address = false # making it explicit
-}
-
-data "template_file" "main" {
-    template = "${ file("${path.module}/cloudinit.yaml") }"
-    vars = {
-        hostname = "${ var.name }.${ var.private_domain_name }"
-    }
 }
 
