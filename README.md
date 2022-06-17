@@ -48,19 +48,23 @@ Now you should be able to SSH into the SSH gateway / jump host by running:
     ssh gw
 
 Now you'll find yourself on a host called `gw`.
-You can connect to the other hosts the same way you connected to `gw`.
-The other hosts are called `monitor` and `devel`, respectively.
+You can connect to the other hosts (`monitor` and `devel`, respectively) the same way you connected to `gw`, by running SSH from your local machine.
 Since this repo is just for terraform, those other hosts aren't really configured, but DNS is, so you don't need to know IPs.
-You can SSH to the other hosts from the `gw` host, however:
 
-1. You would need to login to the `gw` host with the command `ssh -A gw`, but also...
-2. I wouldn't recommend doing that for security reasons. That would be the `ForwardAgent` configuration, rather than the `JumpHost` configuration.
+Once you are already SSH'd into `gw`, you could SSH to the other hosts from the commandline on the `gw` host.
+However:
+
+1. You would need to login to the `gw` host with the command `ssh -A gw`, but more importantly...
+2. There's a security implication to doing this. That would be the `ForwardAgent` configuration, rather than the `JumpHost` configuration. It's the difference between allowing the gateway host to impersonate you to other machines v. creating an end-to-end encrypted tunnel and simply using the SSH gateway host as a hop along that path.
+
+# I'd rather bypass DNS
 
 As you can see from the above, you don't need to know the IP for the gateway host.
 You can simply SSH to `gw.<yourdomain.com>`.
 However, given how long it takes DNS stuff to propagate, if you tore down the environment and then recreated you'd have to wait minutes before that DNS record would work again.
-Hence the `gw_ip.sh` script.
-So for that last step using SSH, if you don't want to wait for the DNS info to propagate, or if you'd just rather SSH using the IP address:
+Hence the `gw_ip.sh` script, which simply reads the `.tfstate` file and writes the IP address for the gateway host to stdout.
+
+So if you want to SSH to the gateway host without waiting for the DNS info to propagate you would run:
 
     # run this from the root directory of the repo
     cd scripts/
