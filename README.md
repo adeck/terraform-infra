@@ -9,7 +9,7 @@ It's a toy environment with three AWS EC2 instances:
 2. Monitoring host (`monitor`) -- This one's beefier, because it's meant to run an Elastic / ELK monitoring stack, and I chose the smallest host that would be able to install + run those components. Size `t3a.medium`.
 3. Development host (`devel`) -- Used for whatever. Developing whatever it is you'd want to develop. Also a `t3.micro`.
 
-[!arch_diagram.svg]
+![Architecture diagram](/arch_diagram.svg)
 
 Running this on the west coast runs >$70 / mo., so I wouldn't recommend running it long-term.
 The only reason I'm using AWS at the moment is to quickly iterate on designs that I actually plan on deploying bare metal.
