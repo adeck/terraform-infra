@@ -1,8 +1,22 @@
 
+# You can probably leave these two items untouched. They just configure the name and the private IP range for the VPC this code manages.
 vpc_cidr = "10.10.0.0/16"
 vpc_name = "devel"
+
+# The AWS region you want to provision into. If you comment this out, the default is us-west-1.
+geo = "us-west-1"
+
+# the IPv4 CIDRs to whitelist for SSH access- so if you're on your home network, you'd use your home network's public IP address. Which you can find pretty easily by simply googling "What is my IP?". If you're on IPv6, it'll take an extra minute or so to figure out the address of the IPv4 gateway that connects you to the IPv4 internet.
 ssh_trusted_cidrs = ["22.22.22.1/32"]
+
+# This is the domain name used in publicly-resolvable hostnames.
+# This assumes you've already created a Route 53 zone for the domain in question
+# The route53 zone for this domain will **not** be created or destroyed; it will simply have a single entry added for the gateway host
 domain = "hello.world"
 
-public_key = "ssh-rsa ... user@example.com"
+# Should be obvious, but you'll also need to generate an AWS API key to make all this stuff work. The key ID goes here. You'll be prompted for the secret key in the terminal when terraform runs.
+access_key = "your AWS Access Key ID"
+
+# replace with your SSH public key
+public_key = "ssh-rsa ..."
 
