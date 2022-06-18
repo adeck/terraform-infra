@@ -95,6 +95,10 @@ So if you want to SSH to the gateway host without waiting for the DNS info to pr
     # run this from the root directory of the repo
     ssh "admin@$(./scripts/gw_ip.sh | tr -d '\n')"
 
+On a related note, the `gw_ip.sh` script is super short and (imho) pretty cool.
+Because `jq` is pretty cool.
+Strongly recommend giving it a glance.
+
 [terraform]: https://www.terraform.io/
 [`jq`]: https://stedolan.github.io/jq/
 
