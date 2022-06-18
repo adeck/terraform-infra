@@ -52,13 +52,15 @@ Now you should be able to SSH into the SSH gateway / jump host by running:
 
 Now you'll find yourself on a host called `gw`.
 You can connect to the other hosts (`monitor` and `devbox`, respectively) the same way you connected to `gw`, by running SSH from your local machine.
-Since this repo is just for terraform, those other hosts aren't really configured, but DNS is, so you don't need to know IPs.
+Since this repo is just for terraform, those other hosts aren't really configured. DNS is configured, though, so you don't need to know IPs.
 
-Once you are already SSH'd into `gw`, you could SSH to the other hosts from the commandline on the `gw` host.
-However:
+By default, you cannot log into `monitor` and `devbox` by running an SSH comand from the `gw` host.
+The reason for this is that the `gw` host does not have access to your forwarding agent, and cannot impersonate you.
+To make that possible, log into `gw` using the command `ssh -A gw`.
 
-1. You would need to login to the `gw` host with the command `ssh -A gw`, but more importantly...
-2. There's a security implication to doing this. That would be the `ForwardAgent` configuration, rather than the `JumpHost` configuration. It's the difference between allowing the gateway host to impersonate you to other machines v. creating an end-to-end encrypted tunnel and simply using the SSH gateway host as a hop along that path.
+Worth noting that I did **not** make this the default because there is a security implication to doing this.
+That would be the `ForwardAgent` configuration, rather than the `JumpHost` configuration.
+It's the difference between allowing the gateway host to impersonate you to other machines v. creating an end-to-end encrypted tunnel and simply using the SSH gateway host as a hop along that path.
 
 # How do I undo the above?
 
