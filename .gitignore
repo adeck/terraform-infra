@@ -5,6 +5,7 @@ env.sh
 .terraform/
 
 adeck/
+nogit/
 
 /infra/terraform/
 /infra/.staging/
