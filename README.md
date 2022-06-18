@@ -18,7 +18,7 @@ The platform is very nice and feature-rich, but prohibitively expensive for home
 # How do I run this?
 
 First, install [`terraform`][terraform].
-Then run these steps:
+Then clone the repo and run these steps from the repo root:
 
     cd infra
     cp terraform.tfvars.example terraform.tfvars
