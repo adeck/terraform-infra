@@ -1,12 +1,17 @@
 
 # You can probably leave these two items untouched. They just configure the name and the private IP range for the VPC this code manages.
+# Worth noting that the VPC name is also used to form the domain name for the private DNS namespace that hosts within the layout use to talk to each other.
+# So, the `gw` host will know itself as `gw.devel.local`, and it will know the `monitor` host as `monitor.devel.local`.
+# If you change the vpc_name to "bibimbap", then the new private domain name will be `bibimbap.local` and the hostnames will change to `gw.bibimbap.local` and `monitor.bibimbap.local`, respectively.
 vpc_cidr = "10.10.0.0/16"
 vpc_name = "devel"
 
 # The AWS region you want to provision into. If you comment this out, the default is us-west-1.
 geo = "us-west-1"
 
-# the IPv4 CIDRs to whitelist for SSH access- so if you're on your home network, you'd use your home network's public IP address. Which you can find pretty easily by simply googling "What is my IP?". If you're on IPv6, it'll take an extra minute or so to figure out the address of the IPv4 gateway that connects you to the IPv4 internet.
+# the IPv4 CIDRs to whitelist for SSH access- so if you're on your home network, you'd use your home network's public IP address.
+# You can figure out your public IP pretty easily by simply googling "What is my IP?".
+# If you're on IPv6, it may take an extra few seconds to figure out the address of the IPv4 gateway that connects you to the IPv4 internet.
 ssh_trusted_cidrs = ["22.22.22.1/32"]
 
 # This is the domain name used in publicly-resolvable hostnames.
