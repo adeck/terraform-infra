@@ -66,8 +66,8 @@ By default, you cannot log into `monitor` and `devbox` by running an SSH comand 
 The reason for this is that the `gw` host does not have access to your forwarding agent, and cannot impersonate you.
 To make that possible, log into `gw` using the command `ssh -A gw`.
 
-Worth noting that I did **not** make this the default because there is a security implication to doing this.
-That would be the `ForwardAgent` configuration, rather than the `JumpHost` configuration.
+Worth noting that I chose **not** to make this the default intentionally, for security reasons.
+When you pass `-A`, you are using a `ForwardAgent` configuration, rather than the `JumpHost` configuration.
 It's the difference between allowing the gateway host to impersonate you to other machines v. creating an end-to-end encrypted tunnel and simply using the SSH gateway host as a hop along that path.
 
 # How do I undo the above?
