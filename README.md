@@ -7,7 +7,7 @@ It's a toy environment with three AWS EC2 instances:
 
 1. SSH gateway host (`gw`) -- This is the only one with a public IP address. You SSH into this host, and from there you can SSH into the other two. Size `t3.micro`.
 2. Monitoring host (`monitor`) -- This one's beefier, because it's meant to run an Elastic / ELK monitoring stack, and I chose the smallest host that would be able to install + run those components. Size `t3a.medium`.
-3. Development host (`devel`) -- Used for whatever. Developing whatever it is you'd want to develop. Also a `t3.micro`.
+3. Development host (`devbox`) -- Used for whatever. Developing whatever it is you'd want to develop. Also a `t3.micro`.
 
 ![Architecture diagram](/arch_diagram.svg)
 
@@ -26,7 +26,10 @@ Then run these steps:
     # follow the instructions in that file
     vim terraform.tfvars 
     terraform init
-    # you don't actually need to run `plan` first, but it's always a good idea to validate what you'll be doing
+    # You don't actually need to run `plan` first,
+    #   but it's always a good idea to validate what you'll be doing.
+    # Also, for these two commands, you'll need to enter your AWS secret.
+    #   You'll also need to confirm by typing "yes" for the "apply" command.
     terraform plan
     terraform apply
 
@@ -39,16 +42,16 @@ Then change your SSH config to resemble what's below:
 
     Host devbox monitor
         ProxyJump gw
-        User admin
         # if you changed the VPC name to something other than `devel`, change that here
         HostName %h.devel.local
+        User admin
 
 Now you should be able to SSH into the SSH gateway / jump host by running:
 
     ssh gw
 
 Now you'll find yourself on a host called `gw`.
-You can connect to the other hosts (`monitor` and `devel`, respectively) the same way you connected to `gw`, by running SSH from your local machine.
+You can connect to the other hosts (`monitor` and `devbox`, respectively) the same way you connected to `gw`, by running SSH from your local machine.
 Since this repo is just for terraform, those other hosts aren't really configured, but DNS is, so you don't need to know IPs.
 
 Once you are already SSH'd into `gw`, you could SSH to the other hosts from the commandline on the `gw` host.
@@ -57,7 +60,20 @@ However:
 1. You would need to login to the `gw` host with the command `ssh -A gw`, but more importantly...
 2. There's a security implication to doing this. That would be the `ForwardAgent` configuration, rather than the `JumpHost` configuration. It's the difference between allowing the gateway host to impersonate you to other machines v. creating an end-to-end encrypted tunnel and simply using the SSH gateway host as a hop along that path.
 
-# I'd rather bypass DNS
+# How do I undo the above?
+
+When you're done playing with the environment, run:
+
+    terraform destroy
+
+Like the `apply` subcommand, you will need to have your AWS secret key on hand and you'll need to type "yes" to confirm that you really want to destroy the AWS resources you created earlier.
+Note that the `destroy` command will **only** destroy resources that were created by terraform during the above run.
+It will **not** destroy the Route 53 zone you had for your domain, nor will it destroy anything else.
+
+You should also remove the entries created in `~/.ssh/known_hosts` for the hosts you SSH'd into.
+And obviously if you don't want to continue playing with these environments, remove the relevant bits from your `~/.ssh/config`.
+
+# Bypassing DNS / SSHing using the gateway IP address
 
 As you can see from the above, you don't need to know the IP for the gateway host.
 You can simply SSH to `gw.<yourdomain.com>`.
@@ -85,11 +101,11 @@ Short version? To create a virtualenv to install stuff into, run:
 
 To "enter" that virtualenv run:
 
-   . /path/to/new/virtual/environment/bin/activate
+    . /path/to/new/virtual/environment/bin/activate
 
 To "leave" that virtualenv run:
 
-   deactivate
+    deactivate
 
 [terraform]: https://www.terraform.io/
 [official python docs]: https://docs.python.org/3/library/venv.html#creating-virtual-environments
