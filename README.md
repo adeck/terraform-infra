@@ -80,35 +80,12 @@ You can simply SSH to `gw.<yourdomain.com>`.
 However, given how long it takes DNS stuff to propagate, if you tore down the environment and then recreated you'd have to wait minutes before that DNS record would work again.
 Hence the `gw_ip.sh` script, which simply reads the `.tfstate` file and writes the IP address for the gateway host to stdout.
 
-So if you want to SSH to the gateway host without waiting for the DNS info to propagate you would run:
+So if you want to SSH to the gateway host without waiting for the DNS info to propagate you would first install [`jq`][], then run:
 
     # run this from the root directory of the repo
-    cd scripts/
-    # NOTE: you may want to run the following step within a python virtualenv. See the end of this guide.
-    pip install -r requirements.txt
-    ssh "admin@$(./gw_ip.sh | tr -d '\n')"
-
-## Python virtualenvs
-
-Python has its own package manager called `pip`.
-The `gw_ip.sh` script uses a python tool called [`jq`][]
-That tool is distributed as a pip package which you may not want to install globally.
-If you just want to install it into a local directory, check out the [official python docs][] on virtualenvs.
-
-Short version? To create a virtualenv, run:
-
-    python3 -m venv /path/to/new/virtual/environment
-
-The virtualenv must be "active" to install pip packages into it. Simply creating the virtualenv does not "activate" it. To "activate" it, run:
-
-    . /path/to/new/virtual/environment/bin/activate
-
-To "deactivate" it while it is active, run:
-
-    deactivate
+    ssh "admin@$(./scripts/gw_ip.sh | tr -d '\n')"
 
 [terraform]: https://www.terraform.io/
-[official python docs]: https://docs.python.org/3/library/venv.html#creating-virtual-environments
 [`jq`]: https://stedolan.github.io/jq/
 
 
