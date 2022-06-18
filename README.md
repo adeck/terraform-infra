@@ -50,9 +50,17 @@ Now you should be able to SSH into the SSH gateway / jump host by running:
 
     ssh gw
 
-Now you'll find yourself on a host called `gw`.
-You can connect to the other hosts (`monitor` and `devbox`, respectively) the same way you connected to `gw`, by running SSH from your local machine.
-Since this repo is just for terraform, those other hosts aren't really configured. DNS is configured, though, so you don't need to know IPs.
+Congratulations! You are now logged in to the gateway host, named `gw`.
+To connect to the other hosts (`monitor` and `devbox`, respectively) you will need to switch to a different terminal window, since you cannot log in to those hosts from the `gw` host itself.
+Otherwise the commands would be the same, to wit:
+
+    ssh monitor
+
+And:
+
+    ssh devbox
+
+Since this repo is just for terraform, those other hosts aren't really configured. But DNS is configured, which is why you don't need to know IPs.
 
 By default, you cannot log into `monitor` and `devbox` by running an SSH comand from the `gw` host.
 The reason for this is that the `gw` host does not have access to your forwarding agent, and cannot impersonate you.
