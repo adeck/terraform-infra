@@ -95,15 +95,15 @@ The `gw_ip.sh` script uses a python tool called [`jq`][]
 That tool is distributed as a pip package which you may not want to install globally.
 If you just want to install it into a local directory, check out the [official python docs][] on virtualenvs.
 
-Short version? To create a virtualenv to install stuff into, run:
+Short version? To create a virtualenv, run:
 
     python3 -m venv /path/to/new/virtual/environment
 
-To "enter" that virtualenv run:
+The virtualenv must be "active" to install pip packages into it. Simply creating the virtualenv does not "activate" it. To "activate" it, run:
 
     . /path/to/new/virtual/environment/bin/activate
 
-To "leave" that virtualenv run:
+To "deactivate" it while it is active, run:
 
     deactivate
 
