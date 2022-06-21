@@ -12,6 +12,7 @@ nogit/
 /infra/envs/*
 !/infra/envs/example
 .terraform.lock.hcl
+.terraform.tfstate.lock.info
 terraform.tfvars
 
 
