@@ -1,3 +1,6 @@
+#
+# TODO: update this to work for recent terraform
+#
 
 module "vpn" {
     name= "vpn"

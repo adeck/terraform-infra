@@ -3,15 +3,16 @@
 Where I keep terraform infrastructure layouts.
 
 There's only one terraform layout in here at the moment.
-It's a toy environment with three AWS EC2 instances:
+It's a toy environment with two AWS EC2 instances:
 
-1. SSH gateway host (`gw`) -- This is the only one with a public IP address. You SSH into this host, and from there you can SSH into the other two. Size `t3.micro`.
+1. SSH gateway host (`gw`) -- This is the only one with a public IP address. You SSH into this host, and from there you can SSH into any other host in the environment. Size `t3.micro`.
 2. Monitoring host (`monitor`) -- This one's beefier, because it's meant to run an Elastic / ELK monitoring stack, and I chose the smallest host that would be able to install + run those components. Size `t3a.medium`.
-3. Development host (`devbox`) -- Used for whatever. Developing whatever it is you'd want to develop. Also a `t3.micro`.
 
 ![Architecture diagram](/arch_diagram.svg)
 
-Running this on the west coast runs >$70 / mo., so I wouldn't recommend running it long-term.
+(Diagram created using [diagrams.net](https://diagrams.net).)
+
+Running this on the west coast runs ~$70 / mo., so I wouldn't recommend running it long-term.
 The only reason I'm using AWS at the moment is to quickly iterate on designs that I actually plan on deploying bare metal.
 The platform is very nice and feature-rich, but prohibitively expensive for home projects.
 
@@ -40,7 +41,7 @@ Then change your SSH config to resemble what's below:
         Hostname gw.example.com
         User admin
 
-    Host devbox monitor
+    Host monitor
         ProxyJump gw
         # if you changed the VPC name to something other than `devel`, change that here
         HostName %h.devel.local
@@ -51,18 +52,14 @@ Now you should be able to SSH into the SSH gateway / jump host by running:
     ssh gw
 
 Congratulations! You are now logged in to the gateway host, named `gw`.
-To connect to the other hosts (`monitor` and `devbox`, respectively) you will need to switch to a different terminal window, since you cannot log in to those hosts from the `gw` host itself.
-Otherwise the commands would be the same, to wit:
+To connect to the other host (`monitor`) you will need to switch to a different terminal window, since you cannot log in to other environment hosts from the `gw` host itself.
+Otherwise the command would be the same, to wit:
 
     ssh monitor
 
-And:
+This repo is just for terraform, so the `monitor` host is not configured. But DNS is configured, which is why you don't need to know IPs.
 
-    ssh devbox
-
-Since this repo is just for terraform, those other hosts aren't really configured. But DNS is configured, which is why you don't need to know IPs.
-
-By default, you cannot log into `monitor` and `devbox` by running an SSH comand from the `gw` host.
+By default, you cannot log into `monitor` by running an SSH comand from the `gw` host.
 The reason for this is that the `gw` host does not have access to your forwarding agent, and cannot impersonate you.
 To make that possible, log into `gw` using the command `ssh -A gw`.
 
@@ -87,7 +84,7 @@ And obviously if you don't want to continue playing with these environments, rem
 
 As you can see from the above, you don't need to know the IP for the gateway host.
 You can simply SSH to `gw.<yourdomain.com>`.
-However, given how long it takes DNS stuff to propagate, if you tore down the environment and then recreated you'd have to wait minutes before that DNS record would work again.
+However, given how long it takes DNS updates to propagate, if you tore down the environment and then recreated you'd have to wait minutes before that DNS record would work again.
 Hence the `gw_ip.sh` script, which simply reads the `.tfstate` file and writes the IP address for the gateway host to stdout.
 
 So if you want to SSH to the gateway host without waiting for the DNS info to propagate you would first install [`jq`][], then run:
