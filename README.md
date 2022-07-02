@@ -10,6 +10,8 @@ It's a toy environment with two AWS EC2 instances:
 
 ![Architecture diagram](/arch_diagram.svg)
 
+(Diagram created using [diagrams.net](https://diagrams.net).)
+
 Running this on the west coast runs ~$70 / mo., so I wouldn't recommend running it long-term.
 The only reason I'm using AWS at the moment is to quickly iterate on designs that I actually plan on deploying bare metal.
 The platform is very nice and feature-rich, but prohibitively expensive for home projects.
