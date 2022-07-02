@@ -6,8 +6,10 @@ module "appliance_monitor" {
     name = "monitor"
     source = "./appliance"
     # limiting factor here is definitely main memory.
-    # Running on a t3a.small, with 2 GiB, you run out before you've even installed all the components.
-    instance_type = "t3a.medium"
+    # Running on a small with only 2 GiB you run out before you've even installed all the components.
+    # as of 2022-7-1 the t4g.medium is $0.0336 / hr in oregon
+    # so, average of $24.528 / month
+    instance_type = "t4g.medium"
     volume_size = 12 # GiB
     vpc_name = var.vpc_name
     key_name = aws_key_pair.ssh.key_name

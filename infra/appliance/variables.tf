@@ -7,9 +7,9 @@ variable "instance_ami" {type = string}
 variable "instance_type" {
     type = string
     # even this might be more than we need
-    # as of this writing it's 0.0104 / hr in oregon and a couple other regions
-    # so, average of $7.5972 / month / appliance
-    default = "t3.micro"
+    # as of 2022-7-1 the t4g.nano is $0.0042 / hr in oregon
+    # so, average of $3.066 / month
+    default = "t4g.nano"
 }
 # value in GiB, as in aws_instance
 variable "volume_size" {

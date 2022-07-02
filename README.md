@@ -3,16 +3,16 @@
 Where I keep terraform infrastructure layouts.
 
 There's only one terraform layout in here at the moment.
-It's a toy environment with two AWS EC2 instances:
+It's a toy ARM (`arm64`) environment with two AWS EC2 instances:
 
-1. SSH gateway host (`gw`) -- This is the only one with a public IP address. You SSH into this host, and from there you can SSH into any other host in the environment. Size `t3.micro`.
-2. Monitoring host (`monitor`) -- This one's beefier, because it's meant to run an Elastic / ELK monitoring stack, and I chose the smallest host that would be able to install + run those components. Size `t3a.medium`.
+1. SSH gateway host (`gw`) -- This is the only one with a public IP address. You SSH into this host, and from there you can SSH into any other host in the environment. Size `t4g.nano`.
+2. Monitoring host (`monitor`) -- This one's beefier, because it's meant to run an Elastic / ELK monitoring stack, and I chose the smallest host that would be able to install + run those components. Size `t4g.medium`.
 
 ![Architecture diagram](/arch_diagram.svg)
 
 (Diagram created using [diagrams.net](https://diagrams.net).)
 
-Running this on the west coast runs ~$70 / mo., so I wouldn't recommend running it long-term.
+Running this on the west coast runs >$50 / mo., so I wouldn't recommend running it long-term.
 The only reason I'm using AWS at the moment is to quickly iterate on designs that I actually plan on deploying bare metal.
 The platform is very nice and feature-rich, but prohibitively expensive for home projects.
 
